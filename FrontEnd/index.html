@@ -1,0 +1,29 @@
+ <!DOCTYPE html>
+<html lang="en" ng-app="vehicleApp">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vehicle Registration System</title>
+
+    <!-- Include AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- Include AngularJS ngRoute for routing -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Your CSS styles go here */
+    </style>
+</head>
+<body ng-controller="loginController">
+
+    <!-- Main content area where AngularJS will inject views -->
+    <div ng-view></div>
+    <!-- Include your AngularJS scripts -->
+    <script src="JS/app.js"></script>
+    <script src="JS/controller.js"></script>
+    <script src="JS/service.js"></script>
+</body>
+</html> 
+

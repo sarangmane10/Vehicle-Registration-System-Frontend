@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">Welcome, {{customer.name}}!</h2>
+            <p class="lead">Manage your vehicle registrations and check their status.</p>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card dashboard-card">
+                <i class="fas fa-car"></i>
+                <h3>{{vehicleCount || 0}}</h3>
+                <p>Registered Vehicles</p>
+                <a href="#/vehicles" class="btn btn-outline-primary">View All</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card dashboard-card">
+                <i class="fas fa-check-circle"></i>
+                <h3>{{approvedCount || 0}}</h3>
+                <p>Approved Registrations</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card dashboard-card">
+                <i class="fas fa-clock"></i>
+                <h3>{{pendingCount || 0}}</h3>
+                <p>Pending Registrations</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Recent Vehicle Registrations</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle</th>
+                                    <th>Type</th>
+                                    <th>Registration No.</th>
+                                    <th>Date Registered</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="vehicle in recentVehicles">
+                                    <td>{{vehicle.make}} {{vehicle.model}}</td>
+                                    <td>{{vehicle.type}}</td>
+                                    <td>{{vehicle.registrationNumber}}</td>
+                                    <td>{{vehicle.registrationDate | date}}</td>
+                                    <td>
+                                        <span ng-class="{
+                                            'status-pending': vehicle.status === 'PENDING',
+                                            'status-approved': vehicle.status === 'APPROVED',
+                                            'status-rejected': vehicle.status === 'REJECTED'
+                                        }">
+                                            {{vehicle.status}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr ng-if="!recentVehicles || recentVehicles.length === 0">
+                                    <td colspan="5" class="text-center">No vehicles registered yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="#/register-vehicle" class="btn btn-primary mt-3">
+                        <i class="fas fa-plus me-2"></i> Register New Vehicle
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>

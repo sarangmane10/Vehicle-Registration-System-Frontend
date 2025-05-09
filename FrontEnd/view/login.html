@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Vehicle Registration System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="CSS/loginStyle.css" rel="stylesheet">
+</head>
+<body ng-controller="loginController">
+  <div class="login-container">
+    <div class="logo">
+      <i class="fas fa-car-alt"></i>
+    </div>
+    <h2>Vehicle Registration System</h2>
+    <form ng-submit="handleLogin()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-icon">
+          <i class="far fa-envelope"></i>
+        </div>
+        <input type="email" id="email" ng-model="login.email" placeholder="Enter your email" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <input type="password" id="password" ng-model="login.password" placeholder="Enter your password" required />
+        <a href="/forgot-password" class="forgot-password">Forgot password?</a>
+      </div>
+      <button type="submit" class="login-btn">Sign In</button>
+      
+      <div class="divider">or</div>
+      
+      <div class="social-login">
+        <div class="social-btn">
+          <i class="fab fa-google"></i>
+        </div>
+        <div class="social-btn">
+          <i class="fab fa-facebook-f"></i>
+        </div>
+        <div class="social-btn">
+          <i class="fab fa-apple"></i>
+        </div>
+      </div>
+    </form>
+    <div class="links">
+      <p>Don't have an account? <a href="#!/register">Register here</a></p>
+    </div>
+  </div>
+
+</body>
+</html>

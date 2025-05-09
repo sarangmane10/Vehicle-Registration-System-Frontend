@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modern Registration Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="CSS/registration.css" rel="stylesheet">
+</head>
+<body ng-controller="registerController">
+
+<div class="form-container">
+  <div class="form-header">
+    <h2>Create Your Account</h2>
+    <p>Join our community and get started today</p>
+  </div>
+  <form ng-submit="handleRegistration()">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <div class="input-icon">
+          <i class="far fa-user"></i>
+        </div>
+        <input type="text" ng-model="customerData.firstName" placeholder="John" required />
+      </div>
+      <div class="form-group">
+        <label>Middle Name</label>
+        <div class="input-icon">
+          <i class="far fa-user"></i>
+        </div>
+        <input type="text" ng-model="customerData.middleName" placeholder="(Optional)" />
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <div class="input-icon">
+          <i class="far fa-user"></i>
+        </div>
+        <input type="text" ng-model="customerData.lastName" placeholder="Doe" required />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <div class="input-icon">
+        <i class="far fa-envelope"></i>
+      </div>
+      <input type="email" ng-model="customerData.email" placeholder="john.doe@example.com" required />
+    </div>
+
+    <div class="form-group">
+      <label>Phone Number</label>
+      <div class="input-icon">
+        <i class="fas fa-phone"></i>
+      </div>
+      <input type="tel" ng-model="customerData.phoneNumber" pattern="\d{10}" placeholder="1234567890" required />
+    </div>
+
+    <div class="form-group">
+      <label>Address</label>
+      <div class="input-icon">
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+      <input type="text" ng-model="customerData.address" placeholder="123 Main Street" required />
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>City</label>
+        <div class="input-icon">
+          <i class="fas fa-city"></i>
+        </div>
+        <input type="text" ng-model="customerData.city" placeholder="Pune" required />
+      </div>
+      <div class="form-group">
+        <label>State</label>
+        <div class="input-icon">
+          <i class="fas fa-flag"></i>
+        </div>
+        <input type="text" ng-model="customerData.state" placeholder="Maharashtra" required />
+      </div>
+      <div class="form-group">
+        <label>Zip Code</label>
+        <div class="input-icon">
+          <i class="fas fa-mail-bulk"></i>
+        </div>
+        <input type="number" ng-model="customerData.pinCode" placeholder="10001" required />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <input type="password" ng-model="customerData.password" placeholder="••••••••" required />
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <div class="input-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <input type="password" ng-model="form.checkPassword" placeholder="••••••••" required />
+      </div>
+      {{checkPassword}}
+    </div>
+
+    <button type="submit" class="btn-submit">
+      <i class="fas fa-user-plus mr-2"></i> Create Account
+    </button>
+
+    <div class="form-footer">
+      Already have an account? <a href="#!/login">Sign in</a>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

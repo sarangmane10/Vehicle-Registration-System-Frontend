@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="adminApp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Vehicle Registration System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-light: #e0e7ff;
+        --dark: #2b2d42;
+        --light: #f8f9fa;
+        --success: #28a745;
+        --danger: #dc3545;
+        --warning: #fd7e14;
+        --border: #dee2e6;
+      }
+
+  .customer-detail-container {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.info-row {
+  display: flex;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.info-label {
+  font-weight: bold;
+  width: 200px;
+  color: #555;
+}
+
+.info-value {
+  flex: 1;
+}
+
+.customer-vehicles {
+  margin-top: 30px;
+}
+
+.back-btn {
+  background: #f0f0f0;
+  color: #333;
+  margin-right: 15px;
+}
+
+.back-btn:hover {
+  background: #e0e0e0;
+}
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: var(--dark);
+      }
+
+      .admin-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 250px;
+        background: var(--dark);
+        color: white;
+        padding: 20px 0;
+      }
+
+      .sidebar-header {
+        padding: 0 20px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+
+      .sidebar-header h2 {
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+
+      .menu-item {
+        padding: 12px 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .menu-item.active {
+        background: var(--primary);
+      }
+
+      .menu-item i {
+        margin-right: 10px;
+        width: 20px;
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        padding: 20px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        border-radius: 8px;
+      }
+
+      .header h1 {
+        font-size: 1.4rem;
+        font-weight: 600;
+      }
+
+      .logout-btn {
+        background: var(--danger);
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      /* Tabs */
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 20px;
+      }
+
+      .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+      }
+
+      .tab.active {
+        border-bottom: 3px solid var(--primary);
+        font-weight: 500;
+      }
+
+      /* Content Sections */
+      .content-section {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .section-header h2 {
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+
+      .action-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      /* Tables */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+
+      th {
+        background: #f8f9fa;
+        font-weight: 500;
+      }
+
+      .status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .status-pending {
+        background: #fff7e6;
+        color: var(--warning);
+      }
+
+      .status-approved {
+        background: #e6f7f0;
+        color: var(--success);
+      }
+
+      .status-rejected {
+        background: #fff1f0;
+        color: var(--danger);
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+
+      .view-btn {
+        background: var(--primary);
+        color: white;
+      }
+
+      .approve-btn {
+        background: var(--success);
+        color: white;
+      }
+
+      .reject-btn {
+        background: var(--danger);
+        color: white;
+      }
+
+      .edit-btn {
+        background: var(--warning);
+        color: white;
+      }
+
+      .delete-btn {
+        background: var(--danger);
+        color: white;
+      }
+
+      /* Add Vehicle Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 500px;
+        max-width: 90%;
+      }
+
+      /* Modal Scrollable Content */
+      .modal-content {
+        max-height: 80vh; /* 80% of viewport height */
+        overflow-y: auto; /* Enable vertical scrolling */
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .admin-container {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+        }
+        .action-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body ng-controller="AdminController">
+    <div class="admin-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h2>Admin Portal</h2>
+        </div>
+        <div class="sidebar-menu">
+          <div
+            class="menu-item"
+            ng-class="{active: currentView === 'customers'}"
+            ng-click="setView('customers');getAllCustomerStat()"
+          >
+            <i class="fas fa-users"></i>
+            <span>Customers</span>
+          </div>
+          <div
+            class="menu-item"
+            ng-class="{active: currentView === 'registrations'}"
+            ng-click="setView('registrations');getAllRegistrations()"
+          >
+            <i class="fas fa-clipboard-check"></i>
+            <span>Registrations</span>
+          </div>
+          <div
+            class="menu-item"
+            ng-class="{active: currentView === 'vehicles'}"
+            ng-click="setView('vehicles');getAllVehicle()"
+          >
+            <i class="fas fa-car"></i>
+            <span>Vehicle Inventory</span>
+          </div>
+          <div
+            class="menu-item"
+            ng-class="{active: currentView === 'profile'}"
+            ng-click="setView('profile');setProfile()"
+          >
+            <i class="fas fa-user-cog"></i>
+            <span>Admin Profile</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="header">
+          <h1>Admin Dashboard</h1>
+          <button class="logout-btn" ng-click="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+
+        <!-- Customers Section -->
+        <div ng-if="currentView === 'customers'">
+          <div class="content-section">
+            <div class="section-header">
+              <h2><i class="fas fa-users"></i> All Customers</h2>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Search customers..."
+                  ng-model="customerSearch"
+                  style="
+                    padding: 8px;
+                    border: 1px solid var(--border);
+                    border-radius: 4px;
+                  "
+                />
+              </div>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Registered Vehicles</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="customer in customers | filter:customerSearch">
+                  <td>{{customer.id}}</td>
+                  <td>{{customer.firstName}} {{customer.lastName}}</td>
+                  <td>{{customer.email}}</td>
+                  <td>{{customer.phoneNumber}}</td>
+                  <td>{{customer.registrations}}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="btn view-btn"
+                        ng-click="viewCustomer(customer.id)"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- {{selectedCustomer}} -->
+        </div>
+
+    <!-- Customer Detail Section -->
+    <div ng-if="currentView === 'customerDetail'">
+      <div class="content-section">
+        <div class="section-header">
+          <button class="btn back-btn" ng-click="currentView = 'customers';closeCustomer()">
+            <i class="fas fa-arrow-left"></i> Back to Customers
+          </button>
+          <h2><i class="fas fa-user"></i> Customer Details </h2>
+        </div>
+    
+        <div class="customer-detail-container">
+          <div class="customer-info">
+            <div class="info-row">
+              <span class="info-label">Customer ID:</span>
+              <span class="info-value">{{customer.id}}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Name:</span>
+              <span class="info-value">{{customer.firstName}} {{customer.lastName}}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Email:</span>
+              <span class="info-value">{{customer.email}}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Phone:</span>
+              <span class="info-value">{{customer.phoneNumber}}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Address:</span>
+              <span class="info-value">{{customer.address}}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">State:</span>
+              <span class="info-value">{{customer.state}}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">City:</span>
+              <span class="info-value">{{customer.city}}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Pin Code:</span>
+              <span class="info-value">{{customer.pinCode}}</span>
+            </div>
+            <!-- Add more fields as needed -->
+          </div>
+    
+          <!-- <div class="customer-vehicles" ng-if="customer.vehicles && customer.vehicles.length">
+            <h3>Registered Vehicles</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Make</th>
+                  <th>Model</th>
+                  <th>Year</th>
+                  <th>License Plate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="vehicle in customer.vehicles">
+                  <td>{{vehicle.make}}</td>
+                  <td>{{vehicle.model}}</td>
+                  <td>{{vehicle.year}}</td>
+                  <td>{{vehicle.licensePlate}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+
+
+        <!-- Registrations Section -->
+        <div ng-if="currentView === 'registrations'">
+          <div class="content-section">
+            <div class="section-header">
+              <h2>
+                <i class="fas fa-clipboard-check"></i> Vehicle Registrations
+              </h2>
+              <div>
+                <span class="status-badge pending"
+                  >{{pendingRegistrations.length}} Pending</span
+                >
+                <span class="status-badge approved"
+                  >{{approvedRegistrations.length}} Approved</span
+                >
+              </div>
+            </div>
+
+            <!-- Registration Tabs -->
+            <div class="tabs">
+              <div
+                class="tab"
+                ng-class="{active: regFilter === 'all'}"
+                ng-click="regFilter = '';getAllRegistrations()"
+              >
+                All Registrations
+              </div>
+              <div
+                class="tab"
+                ng-class="{active: regFilter === 'pending'}"
+                ng-click="regFilter = 'pending'"
+              >
+                Pending Approvals
+              </div>
+              <div
+                class="tab"
+                ng-class="{active: regFilter === 'approved'}"
+                ng-click="regFilter = 'approved'"
+              >
+                Approved
+              </div>
+              <div style="display: flex; align-items: center; justify-content: center;margin-left: 550px;">
+              </div> <input type="search" ng-model="search" placeholder=" Search Registration..." style="height: 30px;margin-left: 10px;">
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Reg. ID</th>
+                  <th>Customer</th>
+                  <th>Vehicle Details</th>
+                  <th>Submitted</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Pending Registrations (Highlighted) -->
+                <tr
+                  ng-repeat="reg in filteredRegistrations = (allRegistrations | filter:regFilter | filter:search)"
+                  ng-class="{'pending-row': reg.status === 'PENDING'}"
+                >
+                  <td>{{reg.id}}</td>
+                  <td>
+                    <strong>{{reg.first_name}} {{reg.last_name}}</strong><br />
+                    <small>{{reg.email}}</small>
+                  </td>
+                  <td>
+                    {{reg.brand}} {{reg.model}} ({{reg.year_of_manufacture}})<br />
+                  </td>
+                  <td>{{reg.registration_date | date:'mediumDate'}}</td>
+                  <td>
+                    <span
+                      ng-class="{
+              'status status-pending': reg.status === 'PENDING',
+              'status status-approved': reg.status === 'APPROVED',
+              'status status-rejected': reg.status === 'REJECTED'
+            }"
+                    >
+                      {{reg.status}}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="btn view-btn"
+                        ng-click="viewRegistrationDetails(reg.id,reg.email)"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        class="btn approve-btn"
+                        ng-click="registrationAction(reg.id,'APPROVED')"
+                        ng-disabled="reg.status !== 'PENDING'"
+                      >
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button
+                        class="btn reject-btn"
+                        ng-click="registrationAction(reg.id,'REJECTED')"
+                        ng-disabled="reg.status !== 'PENDING'"
+                      >
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Empty State -->
+                <tr ng-if="filteredRegistrations.length === 0">
+                  <td colspan="6" class="text-center">
+                    No registrations found
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div ng-if="currentView === 'registrationDetail'">
+          <div class="content-section">
+            <div class="section-header">
+              <button class="btn back-btn" ng-click="goToRegistration()">
+                <i class="fas fa-arrow-left"></i> Back to Registrations
+              </button>
+              <h2><i class="fas fa-file-alt"></i> Registration Details</h2>
+            </div>
+        
+            <div  class="registration-detail-container">
+              <div class="detail-section">
+                <h3>Customer Information</h3>
+                <div class="info-row">
+                  <span class="info-label">Customer Name:</span>
+                  <span class="info-value">{{customer.firstName}} {{customer.lastName}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Customer ID:</span>
+                  <span class="info-value">{{customer.id}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Contact Email:</span>
+                  <span class="info-value">{{customer.email}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Contact Phone:</span>
+                  <span class="info-value">{{customer.phoneNumber}}</span>
+                </div>
+              </div>
+        
+              <div class="detail-section">
+                <h3>Vehicle Information</h3>
+                <div class="info-row">
+                  <span class="info-label">Make:</span>
+                  <span class="info-value">{{newVehicle.brand}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Model:</span>
+                  <span class="info-value">{{newVehicle.model}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Year:</span>
+                  <span class="info-value">{{newVehicle.yearOfManufacture}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Mileage:</span>
+                  <span class="info-value">{{newVehicle.mileage}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Power:</span>
+                  <span class="info-value">{{newVehicle.power}}</span>
+                </div>
+              </div>
+        
+              <div class="detail-section">
+                <h3>Registration Details</h3>
+                <div class="info-row">
+                  <span class="info-label">Registration ID:</span>
+                  <span class="info-value">{{registration.id}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Registration Date:</span>
+                  <span class="info-value">{{registration.registrationDate | date:'mediumDate'}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Expiry Date:</span>
+                  <span class="info-value">{{registration.expiryDate | date:'mediumDate'}}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Status:</span>
+                  <span class="info-value" ng-class="{
+                    'text-success': registration.status === 'Active',
+                    'text-warning': registration.status === 'Pending',
+                    'text-danger': registration.status === 'Expired'
+                  }">{{registration.status}}</span>
+                </div>
+              </div>
+        
+              <div class="action-buttons" style="margin-top: 30px;">
+                <button class="btn print-btn" ng-click="printRegistration(registration.id)">
+                  <i class="fas fa-print"></i> Print Registration
+                </button>
+                <button class="btn renew-btn" ng-if="registration.status === 'Expired'" 
+                        ng-click="renewRegistration(registration.id)">
+                  <i class="fas fa-sync-alt"></i> Renew Registration
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+<!-- Vehicle Details Section -->
+<div ng-if="currentView === 'vehicleDetails'">
+  <div class="content-section">
+    <div class="section-header"> 
+      <button class="btn back-btn" ng-click="setView('vehicles')">
+        <i class="fas fa-arrow-left"></i> Back to My Vehicle
+      </button>
+      <h2><i class="fas fa-file-alt"></i> Vehicle Details</h2>
+    </div>
+    <div class="detail-section">
+      <h3>Vehicle Information</h3>
+      <div class="info-row">
+        <span class="info-label">Make:</span>
+        <span class="info-value">{{newVehicle.brand}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Model:</span>
+        <span class="info-value">{{newVehicle.model}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Vehicle Type:</span>
+        <span class="info-value">{{newVehicle.vehicleType}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Transmission:</span>
+        <span class="info-value">{{newVehicle.transmission}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Year:</span>
+        <span class="info-value">{{newVehicle.yearOfManufacture}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Mileage:</span>
+        <span class="info-value">{{newVehicle.mileage}} kmpl</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Power:</span>
+        <span class="info-value">{{newVehicle.power}} HP</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Engine Type:</span>
+        <span class="info-value">{{newVehicle.engineType}} </span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Colors:</span>
+        <span class="info-value" ng-repeat="color in newVehicle.colors" >{{color}} </span>
+      </div>
+      
+    </div>
+
+    <div class="action-buttons" style="margin-top: 30px;">
+      <button class="btn print-btn" ng-click="printRegistration(registration.id)">
+        <i class="fas fa-print"></i> Print Detais
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+        <div ng-if="currentView === 'vehicles'">
+          <div class="content-section">
+            <div class="section-header">
+              <h2><i class="fas fa-car"></i> Vehicle Inventory</h2>
+              <button class="action-btn" ng-click="showAddVehicleModal()">
+                <i class="fas fa-plus"></i> Add Vehicle
+              </button>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Vehicle ID</th>
+                  <!-- <th>Vehicle Number</th> -->
+                  <th>Brand</th>
+                  <th>Model</th>
+                  <th>Color</th>
+                  <th>Year</th>
+                  <th>Power (HP)</th>
+                  <th>Mileage (kmpl)</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="vehicle in vehicles">
+                  <td>{{vehicle.id}}</td>
+                  <!-- <td>{{vehicle.vehicleNumber}}</td> -->
+                  <td>{{vehicle.brand}}</td>
+                  <td>{{vehicle.model}}</td>
+                  <!-- <td>{{vehicle.color}}</td> -->
+                  <td>
+                    <select
+                      ng-model="x"
+                      ng-options="color for color in vehicle.colors">
+                      {{color}}</select
+                    ><br /><br />
+                  </td>
+                  <td>{{vehicle.yearOfManufacture}}</td>
+                  <td>{{vehicle.power}}</td>
+                  <td>{{vehicle.mileage}}</td>
+                  <td>
+                    <span
+                      ng-class="{
+                    'status status-approved': vehicle.status === 'Available',
+                    'status status-pending': vehicle.status === 'Unavailable'
+                  }"
+                    >
+                      {{vehicle.status}}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        class="btn view-btn"
+                        ng-click="viewVehicle(vehicle,'vehicleDetails')"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        class="btn edit-btn"
+                        ng-click="editVehicle(vehicle)"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <!-- <button
+                        class="btn delete-btn"
+                        ng-click="deleteVehicle(vehicle.id)"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button> -->
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Add Vehicle Modal -->
+          <div class="modal" ng-class="{active: showModal}">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2>{{action}} Vehicle</h2>
+                <button class="close-btn" ng-click="closeModal()">
+                  &times;
+                </button>
+              </div>
+              <form ng-submit="addVehicle()" enctype="multipart/form-data">
+                <!-- <div class="form-group">
+                <label>Vehicle Number (e.g. MH12AB1234)</label>
+                <input type="text" ng-model="newVehicle.vehicleNumber" required pattern="[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}">
+              </div> -->
+                <div class="form-group">
+                  <label>Brand</label>
+                  <input type="text" ng-model="newVehicle.brand" required />
+                </div>
+                <div class="form-group">
+                  <label>Model</label>
+                  <input type="text" ng-model="newVehicle.model" required />
+                </div>
+                <div class="form-group">
+                  <label>Transmission</label>
+                  <input type="text" ng-model="newVehicle.transmission" required />
+                </div>
+                <div class="form-group">
+                  <label>Engine Type</label>
+                  <input type="text" ng-model="newVehicle.engineType" required />
+                </div>
+                <div class="form-group">
+                  <label>Color</label>
+                  <input type="text" ng-model="newVehicle.color" required />
+                </div>
+                <div class="form-group" style="flex: 1">
+                  <label>Vehicle Type</label>
+                  <select ng-model="newVehicle.vehicleType" required>
+                    <option value="Sedan">Sedan</option>
+                    <option value="SUV">SUV</option>
+                    <option value="Sport Car">Sport Car</option>
+                    <option value="Truck">Truck</option>
+                    <option value="Motorcycle">Motorcycle</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Year of Manufacture</label>
+                  <input
+                    type="number"
+                    ng-model="newVehicle.yearOfManufacture"
+                    required
+                    min="1900"
+                    max="{{currentYear}}"
+                  />
+                </div>
+                <div class="form-group" style="flex: 1">
+                  <label>Fuel Type</label>
+                  <select ng-model="newVehicle.fuelType" required>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="CNG">CNG</option>
+                    <option value="Electric">Electric</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Power (in HP)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    ng-model="newVehicle.power"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Mileage (in kmpl)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    ng-model="newVehicle.mileage"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Vehicle Image URL</label>
+                  <input type="text" ng-model="newVehicle.image"/>
+                </div>
+                <div class="form-group">
+                  <label>Price</label>
+                  <input type="number" ng-model="newVehicle.price"/>
+                </div>
+                <div class="form-group">
+                  <label>Status</label>
+                  <select  ng-model="newVehicle.status">
+                    <option value="Available" selected>Available</option>
+                    <option value="Unavailable">Unavailable</option>
+                  </select>
+                </div>
+                <div class="form-actions">
+                  <button
+                    type="button"
+                    class="btn reject-btn"
+                    ng-click="closeModal()"
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" class="btn approve-btn">
+                    {{action}} Vehicle
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Section -->
+         <!-- Profile Section -->
+      <div ng-if="currentView === 'profile'">
+        <div class="content-section">
+          <div class="section-header">
+            <h2><i class="fas fa-user"></i> My Profile</h2>
+          </div>
+
+          <form ng-submit="updateProfile()">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" style="width: 25%;" ng-model="customer.firstName" placeholder="First Name" required>
+              <input type="text" style="width: 25%;" ng-model="customer.middleName" placeholder="Middle Name" required>
+              <input type="text" style="width: 25%;" ng-model="customer.lastName" placeholder="Last Name" required>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" ng-model="customer.email" disabled required>
+            </div>
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="tel" ng-model="customer.phoneNumber" pattern="\d{10}" placeholder="1234567890" required>
+            </div>
+            <div class="form-group">
+              <label>Address</label>
+              <textarea ng-model="customer.address" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" ng-model="customer.city" required>
+            </div>
+            <div class="form-group">
+              <label>State</label>
+              <input type="text" ng-model="customer.state" required>
+            </div>
+            <div class="form-group">
+              <label>Change Password</label>
+              <input type="password" ng-model="customer.password">
+            </div>
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" ng-model="customer.confirmPassword" >
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn register-btn">
+                <i class="fas fa-save"></i> Update Profile
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+      angular.module("adminApp", []).controller("AdminController", [
+        "$scope",
+        function ($scope) {
+          // Initialize
+        },
+      ]);
+    </script>
+  </body>
+</html>
