@@ -17,7 +17,7 @@
 //   var ser=this;
 //   this.login = function (credentials) {
 //     return $http
-//       .post("http://localhost:8080/api/login", credentials)
+//       .post("https://vehicle-registration-system.onrender.com/api/login", credentials)
 //       .then( (response)=> {
 //         if (response.data.status === "success") {
 //           ser.setCustomer(response.data.user);
@@ -67,7 +67,7 @@ app.service("loginService", function($window, $http, $q) {
 
   // Login method
   service.login = function(credentials) {
-      return $http.post("http://localhost:8080/api/login", credentials)
+      return $http.post("https://vehicle-registration-system.onrender.com/api/login", credentials)
           .then(function(response) {
               if (response.data.status === "success") {
                   service.setCustomer(response.data.user,response.data.role);
@@ -92,7 +92,7 @@ app.service("registerService", function ($http, $q) {
   this.registerCustomer = function (data) {
     alert("service");
     return $http
-      .post("http://localhost:8080/api/customers", data)
+      .post("https://vehicle-registration-system.onrender.com/api/customers", data)
       .then(function (response) {
         return response.data; // Return data for chaining
       })
@@ -106,7 +106,7 @@ app.service("registerService", function ($http, $q) {
 app.service('adminService', ['$http','$q', function($http,$q) {
 
     this.getCustomerStat=()=>{
-    return $http.get("http://localhost:8080/api/customers/customersRegitrationCount")
+    return $http.get("https://vehicle-registration-system.onrender.com/api/customers/customersRegitrationCount")
     .then((response)=>{
       // console.log(response.data);
       return response.data;
@@ -118,7 +118,7 @@ app.service('adminService', ['$http','$q', function($http,$q) {
 
 
 this.getRegistrationStat=()=>{
-  return $http.get("http://localhost:8080/api/registrations/details")
+  return $http.get("https://vehicle-registration-system.onrender.com/api/registrations/details")
   .then((response)=>{
     // console.log(response.data);
     return response.data;
@@ -129,7 +129,7 @@ this.getRegistrationStat=()=>{
 }
 
 this.getVehicleDetails=()=>{
-  return $http.get("http://localhost:8080/api/vehicles")
+  return $http.get("https://vehicle-registration-system.onrender.com/api/vehicles")
   .then((response)=>{
     // console.log(response.data);
     return response.data;
@@ -140,7 +140,7 @@ this.getVehicleDetails=()=>{
 }
 
 this.getVehicleDetailsById=(id)=>{
-  return $http.get("http://localhost:8080/api/vehicles/"+id)
+  return $http.get("https://vehicle-registration-system.onrender.com/api/vehicles/"+id)
   .then((response)=>{
     // console.log(response.data);
     return response.data;
@@ -151,7 +151,7 @@ this.getVehicleDetailsById=(id)=>{
 }
 
 this.addVehicle=(data)=>{
-  return $http.post("http://localhost:8080/api/vehicles",data)
+  return $http.post("https://vehicle-registration-system.onrender.com/api/vehicles",data)
   .then((response)=>{
     // console.log(response.data);
     return response.data;
@@ -162,7 +162,7 @@ this.addVehicle=(data)=>{
 }
 
 this.getCustomerById=(id)=>{
-  return $http.get("http://localhost:8080/api/customers/"+id)
+  return $http.get("https://vehicle-registration-system.onrender.com/api/customers/"+id)
   .then((response)=>{
     // console.log(response.data);
     return response.data;
@@ -173,7 +173,7 @@ this.getCustomerById=(id)=>{
 }
 
 this.getRegistrationById=(id)=>{
-  return $http.get("http://localhost:8080/api/registrations/"+id)
+  return $http.get("https://vehicle-registration-system.onrender.com/api/registrations/"+id)
   .then((response)=>{
     // console.log(response.data);
     return response.data;
@@ -184,7 +184,7 @@ this.getRegistrationById=(id)=>{
 }
 
 this.getCustomerByEmail=(email)=>{
-  return $http.get("http://localhost:8080/api/customers/byMail?email="+email)
+  return $http.get("https://vehicle-registration-system.onrender.com/api/customers/byMail?email="+email)
   .then((response)=>{
     // console.log(response.data);
     return response.data;
@@ -195,7 +195,7 @@ this.getCustomerByEmail=(email)=>{
 }
 
 this.takeAction=(id,message)=>{
-  return $http.post("http://localhost:8080/api/registrations/action/"+id+"?message="+message)
+  return $http.post("https://vehicle-registration-system.onrender.com/api/registrations/action/"+id+"?message="+message)
   .then((response)=>{
     // console.log(response.data);
     return response.data;
@@ -206,7 +206,7 @@ this.takeAction=(id,message)=>{
 }
 
 this.editVehicle=(data)=>{
-  return $http.post("http://localhost:8080/api/vehicles/edit",data)
+  return $http.post("https://vehicle-registration-system.onrender.com/api/vehicles/edit",data)
   .then((response)=>{
     // console.log(response.data);
     return response.data;
@@ -222,7 +222,7 @@ this.editVehicle=(data)=>{
 app.service('customerService', ['$http','$q', function($http,$q) {
 
   this.registerVehicle=(data)=>{
-    return $http.post("http://localhost:8080/api/registrations",data)
+    return $http.post("https://vehicle-registration-system.onrender.com/api/registrations",data)
     .then((response)=>{
       return response.data;
     }).catch(()=>{
@@ -232,7 +232,7 @@ app.service('customerService', ['$http','$q', function($http,$q) {
   }
 
   this.getAllRegistrations=(customerId)=>{
-    return $http.get("http://localhost:8080/api/registrations/byCustomerId/"+customerId)
+    return $http.get("https://vehicle-registration-system.onrender.com/api/registrations/byCustomerId/"+customerId)
     .then((response)=>{
       return response.data;
     }).catch(()=>{
@@ -242,7 +242,7 @@ app.service('customerService', ['$http','$q', function($http,$q) {
   }
 
   this.updateCustomer=(customer)=>{
-    return $http.post("http://localhost:8080/api/customers/update",customer)
+    return $http.post("https://vehicle-registration-system.onrender.com/api/customers/update",customer)
     .then((response)=>{
       return response.data;
     }).catch(()=>{
