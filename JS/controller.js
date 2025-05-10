@@ -6,7 +6,7 @@ app.controller(
     $scope.form = {};
 
     $scope.handleRegistration = function () {
-      console.log($scope.form.checkPassword);
+      // console.log($scope.form.checkPassword);
       if ($scope.customerData.password !== $scope.form.checkPassword) {
         alert("Passwords don't match!");
         return;
