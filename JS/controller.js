@@ -510,6 +510,10 @@ app.controller("adminController", [
 
       // Vehicle functions
       $scope.addVehicle = function () {
+
+        console.log($scope.newVehicle.color);
+        $scope.newVehicle.color=$scope.newVehicle.color.trim();
+        console.log($scope.newVehicle.color);
         $scope.newVehicle.colors = $scope.newVehicle.color.split(" ");
         delete $scope.newVehicle.color;
         // console.log($scope.newVehicle);
