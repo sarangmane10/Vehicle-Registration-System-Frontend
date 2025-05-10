@@ -35,10 +35,12 @@ app.controller(
   }
 );
 
-app.controller("loginController", function ($scope, loginService, $location) {
+app.controller("loginController", function ($rootScope ,$scope, loginService, $location) {
   // Login
+  $rootScope.isLoading;
   $scope.login = {};
   $scope.handleLogin = function () {
+    $rootScope.isLoading=true;
     loginService
       .login($scope.login)
       .then(function (response) {
@@ -52,6 +54,8 @@ app.controller("loginController", function ($scope, loginService, $location) {
       })
       .catch(function (error) {
         alert("Login failed: " + (error.data || "Invalid credentials"));
+      }).finally(()=>{
+        $rootScope.isLoading=false;
       });
     $scope.login = {};
   };
@@ -60,11 +64,12 @@ app.controller("loginController", function ($scope, loginService, $location) {
 // controllers.js
 app.controller("customerController", [
   "$scope",
+  "$rootScope",
   "loginService",
   "adminService",
   "customerService",
   "$location",
-  function ($scope, loginService, adminService, customerService, $location) {
+  function ($scope, $rootScope,loginService, adminService, customerService, $location) {
     if (loginService.getRole() === "USER") {
       // Initialize controller
       $scope.currentView = "dashboard";
@@ -135,6 +140,7 @@ app.controller("customerController", [
         // },
       ];
       $scope.getAllVehicle = () => {
+        $rootScope.isLoading=true;
         adminService
           .getVehicleDetails()
           .then((response) => {
@@ -145,7 +151,9 @@ app.controller("customerController", [
           })
           .catch((error) => {
             alert("Failed..." + error.data);
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
       };
 
       // // Initialize form data
@@ -206,6 +214,7 @@ app.controller("customerController", [
       $scope.vehicles = [];
       $scope.getMyRegistrations = () => {
         $scope.vehicles = []; // Clear existing data
+$rootScope.isLoading=true;
         customerService
           .getAllRegistrations(loginService.getCustomer().id)
           .then((registrations) => {
@@ -248,7 +257,9 @@ app.controller("customerController", [
           .catch((error) => {
             console.log("Error:", error);
             alert("Error Occurred. Please Check Console");
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
       };
 
       $scope.editVehicle=(vehicle)=>{
@@ -300,6 +311,7 @@ app.controller("customerController", [
           registrationLocation: $scope.vehicleForm.place,
           status: "PENDING",
         };
+        $rootScope.isLoading=true;
         customerService
           .registerVehicle(vehicle)
           .then((response) => {
@@ -310,7 +322,9 @@ app.controller("customerController", [
           .catch((error) => {
             console.log(error);
             alert("Error Occured. Please Check Log");
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
       };
 
       //Customer Profile actions
@@ -330,6 +344,7 @@ app.controller("customerController", [
           delete $scope.customer.id;
           // $scope.customer.id=Number($scope.customer.id);
           console.log($scope.customer);
+          $rootScope.isLoading=true;
           customerService.updateCustomer($scope.customer)
           .then((response)=>{
             alert("Details Updated Successfully");
@@ -337,7 +352,9 @@ app.controller("customerController", [
           }).catch((error)=>{
             console.log(error);
             alert("Error Occured. Please Check Log");
-          })
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
         }
         
       };
@@ -358,11 +375,12 @@ app.controller("customerController", [
 
 app.controller("adminController", [
   "$scope",
+  "$rootScope",
   "adminService",
   "$location",
   "loginService",
   "customerService",
-  function ($scope, adminService, $location, loginService,customerService) {
+  function ($scope,$rootScope, adminService, $location, loginService,customerService) {
     if (loginService.getRole() === "ADMIN") {
       $scope.currentView = "customers";
       $scope.showModal = false;
@@ -380,6 +398,7 @@ app.controller("adminController", [
         });
 
       $scope.getAllCustomerStat = () => {
+        $rootScope.isLoading=true;
         adminService
           .getCustomerStat()
           .then((response) => {
@@ -387,12 +406,15 @@ app.controller("adminController", [
           }).catch((error) => {
             console.log(error);
             alert("Error Occured. Please Check Log");
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
       };
 
       $scope.allRegistrations = [];
 
       $scope.getAllRegistrations = () => {
+         $rootScope.isLoading=true;
         adminService
           .getRegistrationStat()
           .then((response) => {
@@ -407,12 +429,15 @@ app.controller("adminController", [
           .catch((error) => {
             console.log(error);
             alert("Error Occured. Please Check Log");
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
       };
 
       $scope.vehicles = [];
 
       $scope.getAllVehicle = () => {
+         $rootScope.isLoading=true;
         adminService
           .getVehicleDetails()
           .then((response) => {
@@ -423,13 +448,16 @@ app.controller("adminController", [
           })
           .catch((error) => {
             alert("Failed..." + error.data);
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
       };
 
       $scope.viewCustomer = (id) => {
         // alert(id);
         $scope.currentView = "customerDetail";
         // console.log($scope.currentView);
+        $rootScope.isLoading=true;
         adminService
           .getCustomerById(id)
           .then((response) => {
@@ -439,7 +467,9 @@ app.controller("adminController", [
           .catch((error) => {
             console.log(error);
             alert("Error Occured. Please Check Log");
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
       };
 
       $scope.closeCustomer = () => {
@@ -484,6 +514,7 @@ app.controller("adminController", [
         delete $scope.newVehicle.color;
         // console.log($scope.newVehicle);
         if($scope.action==='Add'){
+           $rootScope.isLoading=true;
           adminService.addVehicle($scope.newVehicle)
             .then((response) => {
               alert("Vehicle Added Successfully");
@@ -494,9 +525,12 @@ app.controller("adminController", [
             .catch((error) => {
               console.log(error);
               alert("Error Occured. Please Check Log");
-            });
+            }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
         }else{
           // alert($scope.newVehicle.id);
+          $rootScope.isLoading=true;
           adminService.editVehicle($scope.newVehicle)
             .then((response) => {
               alert("Vehicle Edited Successfully");
@@ -507,7 +541,9 @@ app.controller("adminController", [
             .catch((error) => {
               console.log(error);
               alert("Error Occured. Please Check Log");
-            });
+            }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
         }
         $scope.closeModal();
       };
@@ -540,6 +576,7 @@ app.controller("adminController", [
       $scope.viewRegistrationDetails = function (id, email) {
         // alert("Viewing registration: " + id);
         $scope.currentView = "registrationDetail";
+        $rootScope.isLoading=true;
         adminService
           .getRegistrationById(id)
           .then((response) => {
@@ -557,7 +594,9 @@ app.controller("adminController", [
           .catch(() => {
             console.log(error);
             alert("Error Occured. Please Check Log");
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
 
         adminService
           .getCustomerByEmail(email)
@@ -568,7 +607,9 @@ app.controller("adminController", [
           .catch((error) => {
             console.log(error);
             alert("Error Occured. Please Check Log");
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
       };
 
       $scope.goToRegistration = () => {
@@ -576,6 +617,7 @@ app.controller("adminController", [
       };
 
       $scope.registrationAction = function (id, message) {
+        $rootScope.isLoading=true;
         adminService
           .takeAction(id, message)
           .then(() => {
@@ -584,7 +626,9 @@ app.controller("adminController", [
           .catch(() => {
             console.log(error);
             alert("Error Occured. Please Check Log");
-          });
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
       };
 
       $scope.setProfile=()=>{
@@ -606,6 +650,7 @@ app.controller("adminController", [
           delete $scope.customer.confirmPassword;
           delete $scope.customer.id;
           // $scope.customer.id=Number($scope.customer.id);
+           $rootScope.isLoading=true;
           console.log($scope.customer);
           customerService.updateCustomer($scope.customer)
           .then((response)=>{
@@ -614,7 +659,9 @@ app.controller("adminController", [
           }).catch((error)=>{
             console.log(error);
             alert("Error Occured. Please Check Log");
-          })
+          }).finally(()=>{
+        $rootScope.isLoading=false;
+      });
         }
         
       };
