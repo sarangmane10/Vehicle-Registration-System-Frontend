@@ -68,7 +68,7 @@ app.service("registerService", function ($http, $q) {
         return response.data; // Return data for chaining
       })
       .catch(function (error) {
-        alert(error);
+        console.log(error);
         return $q.reject(error + "error"); // Properly reject the promise
       });
   };
@@ -80,7 +80,7 @@ app.service("registerService", function ($http, $q) {
         return response.data; // Return data for chaining
       })
       .catch(function (error) {
-        alert(error);
+        console.log(error);
         return $q.reject(error + "error"); // Properly reject the promise
       });
   }
@@ -94,7 +94,7 @@ app.service('adminService', ['$http','$q', function($http,$q) {
       // console.log(response.data);
       return response.data;
     }).catch(function (error) {
-      alert(error);
+      console.log(error);
       return $q.reject(error + "error"); // Properly reject the promise
     });
 }
@@ -106,7 +106,7 @@ this.getRegistrationStat=()=>{
     // console.log(response.data);
     return response.data;
   }).catch(function (error) {
-    alert(error);
+    console.log(error);
     return $q.reject(error + "error"); // Properly reject the promise
   });
 }
@@ -117,7 +117,7 @@ this.getVehicleDetails=()=>{
     // console.log(response.data);
     return response.data;
   }).catch(function (error) {
-    alert(error);
+    console.log(error);
     return $q.reject(error + "error"); // Properly reject the promise
   });
 }
@@ -128,7 +128,7 @@ this.getVehicleDetailsById=(id)=>{
     // console.log(response.data);
     return response.data;
   }).catch(function (error) {
-    alert(error);
+    console.log(error);
     return $q.reject(error + "error"); // Properly reject the promise
   });
 }
@@ -139,7 +139,7 @@ this.addVehicle=(data)=>{
     // console.log(response.data);
     return response.data;
   }).catch(function (error) {
-    alert(error);
+    console.log(error);
     return $q.reject(error + "error"); // Properly reject the promise
   });
 }
@@ -150,7 +150,7 @@ this.getCustomerById=(id)=>{
     // console.log(response.data);
     return response.data;
   }).catch(function (error) {
-    alert(error);
+    console.log(error);
     return $q.reject(error + "error"); // Properly reject the promise
   });
 }
@@ -161,7 +161,7 @@ this.getRegistrationById=(id)=>{
     // console.log(response.data);
     return response.data;
   }).catch(function (error) {
-    alert(error);
+    console.log(error);
     return $q.reject(error + "error"); // Properly reject the promise
   });
 }
@@ -172,7 +172,7 @@ this.getCustomerByEmail=(email)=>{
     // console.log(response.data);
     return response.data;
   }).catch(function (error) {
-    alert(error);
+    console.log(error);
     return $q.reject(error + "error"); // Properly reject the promise
   });
 }
@@ -183,7 +183,7 @@ this.takeAction=(id,message)=>{
     // console.log(response.data);
     return response.data;
   }).catch(function (error) {
-    alert(error);
+    console.log(error);
     return $q.reject(error + "error"); // Properly reject the promise
   });
 }
@@ -194,7 +194,7 @@ this.editVehicle=(data)=>{
     // console.log(response.data);
     return response.data;
   }).catch(function (error) {
-    alert(error);
+    console.log(error);
     return $q.reject(error + "error"); // Properly reject the promise
   });
 }
@@ -209,7 +209,7 @@ app.service('customerService', ['$http','$q', function($http,$q) {
     .then((response)=>{
       return response.data;
     }).catch(()=>{
-      alert(error);
+      console.log(error);
       return $q.reject(error + "error");
     })
   }
@@ -219,7 +219,7 @@ app.service('customerService', ['$http','$q', function($http,$q) {
     .then((response)=>{
       return response.data;
     }).catch(()=>{
-      alert(error);
+      console.log(error);
       return $q.reject(error + "error");
     })
   }
@@ -229,7 +229,7 @@ app.service('customerService', ['$http','$q', function($http,$q) {
     .then((response)=>{
       return response.data;
     }).catch(()=>{
-      alert(error);
+      console.log(error);
       return $q.reject(error + "error");
     })
   }

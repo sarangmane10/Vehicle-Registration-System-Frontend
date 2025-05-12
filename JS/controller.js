@@ -769,7 +769,14 @@ app.controller("password", [
   "adminService",
   "loginService",
   "$rootScope",
-  function ($scope, $location, registerService, adminService, loginService,$rootScope) {
+  function (
+    $scope,
+    $location,
+    registerService,
+    adminService,
+    loginService,
+    $rootScope
+  ) {
     $scope.showPage1 = true;
     $scope.showPage2 = false;
     $scope.showPage3 = false;
@@ -778,62 +785,59 @@ app.controller("password", [
     $scope.newPassword = "";
     $scope.confirmPassword = "";
     let otp;
-    $scope.otpBtnStatus = false;
-    const enableBtn = setTimeout(() => {
-      $scope.otpBtnStatus = false;
-    }, 20000);
     // Step 1: Send OTP
     $scope.sendOTP = function () {
-      $scope.otpBtnStatus = true;
       if (!$scope.email) {
         alert("Please enter your email.");
-        return;
-      }
-      $rootScope.isLoading = true;;
-      adminService
-        .getCustomerByEmail($scope.email)
-        .then((response) => {
-          console.log("User found");
-          console.log(response);
-        })
-        .catch((error) => {
-          alert("User not Found");
-          console(error);
-          return;
-        }).finally(() => {
-              $rootScope.isLoading = false;
-            });
-      otp = Math.floor(Math.random() * 10000) + "";
-      for (let i = otp.length; i < 4; i++) {
-        otp = "0" + otp;
-      }
+      } else {
+        $rootScope.isLoading = true;
+        adminService
+          .getCustomerByEmail($scope.email)
+          .then((response) => {
+            console.log("User found");
+            console.log(response);
+            otp = Math.floor(Math.random() * 10000) + "";
+            for (let i = otp.length; i < 4; i++) {
+              otp = "0" + otp;
+            }
 
-      let emailBody = {
-        to: $scope.email,
-        subject:
-          "Vehicle Registration System Registration Reset Your Password OTP",
-        body:
-          "OTP is " +
-          otp +
-          " \nDo not share with any one \nOTP is valid for 5 min only",
-      };
-      // console.log(emailBody);
-      $rootScope.isLoading = true;
-      registerService
-        .sendOTP(emailBody)
-        .then((response) => {
-          alert("Email sent Successfully");
-        })
-        .then(() => {
-          $scope.showPage1 = false;
-          $scope.showPage2 = true;
-        })
-        .catch((error) => {
-          alert("Error Occured check consol");
-          console.log(error);
-        }).finally(() => {
-              $rootScope.isLoading = false;
-            });
+            let emailBody = {
+              to: $scope.email,
+              subject:
+                "Vehicle Registration System Registration Reset Your Password OTP",
+              body:
+                "OTP is " +
+                otp +
+                " \nDo not share with any one \nOTP is valid for 5 min only",
+            };
+            // console.log(emailBody);
+            $rootScope.isLoading = true;
+            registerService
+              .sendOTP(emailBody)
+              .then((response) => {
+                alert("Email sent Successfully");
+              })
+              .then(() => {
+                $scope.showPage1 = false;
+                $scope.showPage2 = true;
+              })
+              .catch((error) => {
+                alert("Error Occured check consol");
+                console.log(error);
+              })
+              .finally(() => {
+                $rootScope.isLoading = false;
+              });
+          })
+          .catch((error) => {
+            alert("User not Found");
+            console.log(error);
+            return;
+          })
+          .finally(() => {
+            $rootScope.isLoading = false;
+          });
+      }
     };
 
     // Step 2: Verify OTP
@@ -862,7 +866,7 @@ app.controller("password", [
         alert("Passwords do not match.");
         return;
       }
-       $rootScope.isLoading = true;
+      $rootScope.isLoading = true;
       loginService
         .resetPassword({ email: $scope.email, password: $scope.newPassword })
         .then((response) => {
@@ -872,9 +876,10 @@ app.controller("password", [
         .catch((error) => {
           alert("Error occured. Check Consol");
           console.log(error);
-        }).finally(() => {
-              $rootScope.isLoading = false;
-            });
+        })
+        .finally(() => {
+          $rootScope.isLoading = false;
+        });
     };
   },
 ]);
