@@ -44,6 +44,18 @@ app.service("loginService", function($window, $http, $q) {
               });
           });
   };
+
+  this.resetPassword=(credentials)=>{
+     return $http.post("https://vehicle-registration-system.onrender.com/api/resetPassword", credentials)
+          .then(function(response) {
+              if (response.data.status === "success") {
+                  return response.data;
+              }else{
+              console.warn("Login failed with response:", response.data);
+              return $q.reject(response.data);
+              }
+          })
+  }
 });
 
 app.service("registerService", function ($http, $q) {

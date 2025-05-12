@@ -20,6 +20,10 @@
         templateUrl: "view/admin/adminHome.html",
         controller: "adminController",
       })
+      .when("/forgot-password", {
+        templateUrl: "view/resetPassword.html",
+        controller: "password",
+      })
       .otherwise({ redirectTo: "/" });
   });
   

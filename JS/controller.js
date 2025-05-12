@@ -24,6 +24,7 @@ app.controller(
         } else {
           $scope.customerData.userType = "ADMIN";
         }
+        delete $scope.customerData.otp;
         registerService
           .registerCustomer($scope.customerData)
           .then(function (response) {
@@ -758,5 +759,122 @@ app.controller("adminController", [
     } else {
       $location.path("/login");
     }
+  },
+]);
+
+app.controller("password", [
+  "$scope",
+  "$location",
+  "registerService",
+  "adminService",
+  "loginService",
+  "$rootScope",
+  function ($scope, $location, registerService, adminService, loginService,$rootScope) {
+    $scope.showPage1 = true;
+    $scope.showPage2 = false;
+    $scope.showPage3 = false;
+    $scope.email = "";
+    $scope.otp = "";
+    $scope.newPassword = "";
+    $scope.confirmPassword = "";
+    let otp;
+    $scope.otpBtnStatus = false;
+    const enableBtn = setTimeout(() => {
+      $scope.otpBtnStatus = false;
+    }, 20000);
+    // Step 1: Send OTP
+    $scope.sendOTP = function () {
+      $scope.otpBtnStatus = true;
+      if (!$scope.email) {
+        alert("Please enter your email.");
+        return;
+      }
+      $rootScope.isLoading = true;;
+      adminService
+        .getCustomerByEmail($scope.email)
+        .then((response) => {
+          console.log("User found");
+          console.log(response);
+        })
+        .catch((error) => {
+          alert("User not Found");
+          console(error);
+          return;
+        }).finally(() => {
+              $rootScope.isLoading = false;
+            });
+      otp = Math.floor(Math.random() * 10000) + "";
+      for (let i = otp.length; i < 4; i++) {
+        otp = "0" + otp;
+      }
+
+      let emailBody = {
+        to: $scope.email,
+        subject:
+          "Vehicle Registration System Registration Reset Your Password OTP",
+        body:
+          "OTP is " +
+          otp +
+          " \nDo not share with any one \nOTP is valid for 5 min only",
+      };
+      // console.log(emailBody);
+      $rootScope.isLoading = true;
+      registerService
+        .sendOTP(emailBody)
+        .then((response) => {
+          alert("Email sent Successfully");
+        })
+        .then(() => {
+          $scope.showPage1 = false;
+          $scope.showPage2 = true;
+        })
+        .catch((error) => {
+          alert("Error Occured check consol");
+          console.log(error);
+        }).finally(() => {
+              $rootScope.isLoading = false;
+            });
+    };
+
+    // Step 2: Verify OTP
+    $scope.verifyOTP = function () {
+      if (!$scope.otp) {
+        alert("Please enter the OTP.");
+        return;
+      }
+      if (otp !== $scope.otp) {
+        alert("Please enter valid OTP.");
+        return;
+      }
+
+      $scope.showPage2 = false;
+      $scope.showPage3 = true;
+    };
+
+    // Step 3: Reset Password
+    $scope.resetPassword = function () {
+      if (!$scope.newPassword || !$scope.confirmPassword) {
+        alert("Please fill both password fields.");
+        return;
+      }
+
+      if ($scope.newPassword !== $scope.confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+       $rootScope.isLoading = true;
+      loginService
+        .resetPassword({ email: $scope.email, password: $scope.newPassword })
+        .then((response) => {
+          alert("Password reset successful!");
+          $location.path("/login");
+        })
+        .catch((error) => {
+          alert("Error occured. Check Consol");
+          console.log(error);
+        }).finally(() => {
+              $rootScope.isLoading = false;
+            });
+    };
   },
 ]);
