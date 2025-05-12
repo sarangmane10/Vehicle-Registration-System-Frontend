@@ -48,6 +48,16 @@
       </div>
       <input type="email" ng-model="customerData.email" placeholder="john.doe@example.com" required />
     </div>
+    <p style="color: red;" ng-show="otpBtnStatus">resend otp after 2 min</p>
+<button type="button" ng-disabled="otpBtnStatus" style="height: 25px; width: 70px; cursor: pointer; background-color: #4361ee; border-radius: 10px; margin-bottom: 7px; color: aliceblue;" ng-click="sendOTP(customerData.email)"> send otp</button>
+    <div class="form-group">
+      <label>OTP</label> 
+      <div class="input-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+      <input type="number" ng-model="customerData.otp" placeholder="****" required />
+      
+    </div>
 
     <div class="form-group">
       <label>Phone Number</label>

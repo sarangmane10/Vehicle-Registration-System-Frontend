@@ -1,44 +1,3 @@
-// app.service("loginService", function ($window,$http, $q) {
-//   // Login
-//   this.setCustomer = function (customer) {
-//     $window.sessionStorage.setItem("currentCustomer", JSON.stringify(customer));
-//   };
-
-//   // Get customer data
-//   this.getCustomer = function () {
-//     var customer = $window.sessionStorage.getItem("currentCustomer");
-//     return customer ? JSON.parse(customer) : null;
-//   };
-
-//   // Clear on logout
-//   this.clearCustomer = function () {
-//     $window.sessionStorage.removeItem("currentCustomer");
-//   };
-//   var ser=this;
-//   this.login = function (credentials) {
-//     return $http
-//       .post("https://vehicle-registration-system.onrender.com/api/login", credentials)
-//       .then( (response)=> {
-//         if (response.data.status === "success") {
-//           ser.setCustomer(response.data.user);
-//           console.log(response);
-//           return response.data; // Contains message, user data, role
-//         } else {
-//           return $q.reject(response.data);
-//         }
-//       })
-//       .catch((error)=> {
-//         alert("catch");
-//         console.log(error);
-//         return $q.reject(error + "error"); // Properly reject the promise
-//       });
-//   };
-
-//   // this.getCustomer = () => {
-//   //   return customer;
-//   // };
-// });
-
 app.service("loginService", function($window, $http, $q) {
   var service = this; // Capture service instance
   
@@ -90,7 +49,7 @@ app.service("loginService", function($window, $http, $q) {
 app.service("registerService", function ($http, $q) {
   // Registration
   this.registerCustomer = function (data) {
-    alert("service");
+    // alert("service");
     return $http
       .post("https://vehicle-registration-system.onrender.com/api/customers", data)
       .then(function (response) {
@@ -101,6 +60,18 @@ app.service("registerService", function ($http, $q) {
         return $q.reject(error + "error"); // Properly reject the promise
       });
   };
+
+  this.sendOTP=(emailBody)=>{
+ return $http
+      .post("https://vehicle-registration-system.onrender.com/api/send-email", emailBody)
+      .then(function (response) {
+        return response.data; // Return data for chaining
+      })
+      .catch(function (error) {
+        alert(error);
+        return $q.reject(error + "error"); // Properly reject the promise
+      });
+  }
 });
 
 app.service('adminService', ['$http','$q', function($http,$q) {
