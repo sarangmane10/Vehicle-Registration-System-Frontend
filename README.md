@@ -6,5 +6,7 @@ follow below link to access website. https://vehicleregistrationsystem.netlify.a
 server takes 5 min to start be patient..
 
 For admin log in use below credentials:
+
 mail: admin@gmail.com
+
 Password: Admin
